@@ -10,6 +10,7 @@ let level = 0;
 let canPress = true;
 let isGameStarted = false;
 
+// Game logic
 function GameStart() {
   canPress = false;
   document.addEventListener("keydown", () => {
@@ -31,10 +32,10 @@ function ButtonClick(event) {
   const color = event.target.id;
   PlayAnimation(color);
   PlayAudio(color);
-  console.log(patternIterator);
   Check(color);
 }
 
+// Check if the player patter is correct
 function Check(color) {
   if (color == colorPattern[patternIterator]) {
     patternIterator++;
@@ -60,7 +61,6 @@ function AddNextColor() {
   const randColor = Math.floor(Math.random() * 4);
   const color = colors[randColor];
   colorPattern.push(color);
-  console.log(colorPattern);
   PlayAnimation(color);
   PlayAudio(color);
   gameTitle.innerHTML = `Level: ${level}`;
