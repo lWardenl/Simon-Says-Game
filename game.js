@@ -1,5 +1,5 @@
-const colors = ["red", "green", "blue", "yellow"];
-const buttons = $(".button");
+const colors = ["green", "red", "yellow", "blue"];
+const buttons = document.querySelectorAll('div[type="button"]');
 const colorPattern = [];
 const playerPattern = [];
 
@@ -8,12 +8,28 @@ let isGameOver = false;
 console.log(buttons);
 
 function GameLoop() {
-  while (!isGameOver) {}
+  document.addEventListener("click", () => {
+    AddNextColor();
+  });
 }
 
 function AddNextColor() {
   const randColor = Math.floor(Math.random() * 4);
-  let color = colors[randColor];
+  const color = colors[randColor];
   colorPattern.push(color);
-  alert(color);
+  console.log(color);
+  // PlayAnimation(color);
+  PlayAudio(color);
 }
+
+function PlayAnimation(buttonID) {
+  // buttonID.classList.add("pressed");
+}
+
+function PlayAudio(color) {
+  const soundFile = `./sounds/${color}.mp3`;
+  const sound = new Audio(soundFile);
+  sound.play();
+}
+
+GameLoop();
