@@ -11,6 +11,7 @@ let canPress = true;
 let isGameStarted = false;
 
 function GameStart() {
+  canPress = false;
   document.addEventListener("keydown", () => {
     if (!isGameStarted) {
       AddNextColor();
