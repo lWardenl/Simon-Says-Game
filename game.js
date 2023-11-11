@@ -8,9 +8,16 @@ let colorPattern = [];
 let patternIterator = 0;
 let level = 0;
 let canPress = true;
+let isGameStarted = false;
 
 function GameStart() {
-  document.addEventListener("keydown", () => AddNextColor());
+  document.addEventListener("keydown", () => {
+    if (!isGameStarted) {
+      AddNextColor();
+      canPress = true;
+      isGameStarted = true;
+    }
+  });
 
   buttons.forEach((button) => {
     button.addEventListener("click", (event) => ButtonClick(event));
@@ -34,8 +41,8 @@ function Check(color) {
       canPress = false;
       setTimeout(() => {
         NextLevel();
+        canPress = true;
       }, 1000);
-      canPress = true;
     }
   } else {
     ResetGame();
@@ -76,17 +83,16 @@ function PlayAudio(color) {
 function ResetGame() {
   colorPattern = [];
   level = 0;
-  patternIterator = 0;
   canPress = false;
+  patternIterator = 0;
   backgroundColor.classList.add("game-over");
   wrongAudio.play();
+  isGameStarted = false;
+  gameTitle.innerText = "Game Over, Press Any Key to Restart";
 
   setTimeout(() => {
-    AddNextColor();
     backgroundColor.classList.remove("game-over");
   }, 500);
-
-  canPress = true;
 }
 
 GameStart();
