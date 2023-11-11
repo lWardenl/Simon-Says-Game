@@ -1,10 +1,11 @@
 const colors = ["green", "red", "yellow", "blue"];
 const buttons = document.querySelectorAll('div[type="button"]');
 
-let playerPattern = [];
+let gameTitle = document.getElementById("level-title");
 let colorPattern = [];
 let patternIterator = 0;
 let level = 0;
+let canPress = true;
 
 function GameStart() {
   document.addEventListener("keydown", () => AddNextColor());
@@ -15,39 +16,44 @@ function GameStart() {
 }
 
 function ButtonClick(event) {
+  if (!canPress) return;
+
   const color = event.target.id;
-  playerPattern.push(color);
-  console.log(playerPattern);
   PlayAnimation(color);
   PlayAudio(color);
   console.log(patternIterator);
   Check(color);
-  patternIterator++;
 }
 
 function Check(color) {
-  if (
-    color == colorPattern[patternIterator] &&
-    colorPattern.length == patternIterator
-  ) {
+  if (color == colorPattern[patternIterator]) {
+    patternIterator++;
     if (colorPattern.length == patternIterator) {
+      canPress = false;
       setTimeout(() => {
-        patternIterator = 0;
-        AddNextColor();
+        NextLevel();
       }, 1000);
+      canPress = true;
     }
   } else {
     ResetGame();
   }
 }
 
+function NextLevel() {
+  patternIterator = 0;
+  AddNextColor();
+}
+
 function AddNextColor() {
+  level++;
   const randColor = Math.floor(Math.random() * 4);
   const color = colors[randColor];
   colorPattern.push(color);
   console.log(colorPattern);
   PlayAnimation(color);
   PlayAudio(color);
+  gameTitle.innerHTML = `Level: ${level}`;
 }
 
 function PlayAnimation(buttonID) {
@@ -67,9 +73,9 @@ function PlayAudio(color) {
 
 function ResetGame() {
   colorPattern = [];
-  playerPattern = [];
   level = 0;
   patternIterator = 0;
+  AddNextColor();
 }
 
 GameStart();
