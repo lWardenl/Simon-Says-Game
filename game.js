@@ -1,25 +1,44 @@
 const colors = ["green", "red", "yellow", "blue"];
 const buttons = document.querySelectorAll('div[type="button"]');
-const colorPattern = [];
-const playerPattern = [];
 
+let playerPattern = [];
+let colorPattern = [];
+let patternIterator = 0;
 let level = 0;
-let isGameOver = false;
 
-function GameLoop() {
-  document.addEventListener("keydown", () => {
-    AddNextColor();
-  });
+function GameStart() {
+  document.addEventListener("keydown", () => AddNextColor());
 
   buttons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      const color = event.target.id;
-      playerPattern.push(color);
-      console.log(playerPattern);
-      PlayAnimation(color);
-      PlayAudio(color);
-    });
+    button.addEventListener("click", (event) => ButtonClick(event));
   });
+}
+
+function ButtonClick(event) {
+  const color = event.target.id;
+  playerPattern.push(color);
+  console.log(playerPattern);
+  PlayAnimation(color);
+  PlayAudio(color);
+  console.log(patternIterator);
+  Check(color);
+  patternIterator++;
+}
+
+function Check(color) {
+  if (
+    color == colorPattern[patternIterator] &&
+    colorPattern.length == patternIterator
+  ) {
+    if (colorPattern.length == patternIterator) {
+      setTimeout(() => {
+        patternIterator = 0;
+        AddNextColor();
+      }, 1000);
+    }
+  } else {
+    ResetGame();
+  }
 }
 
 function AddNextColor() {
@@ -37,7 +56,7 @@ function PlayAnimation(buttonID) {
 
   setTimeout(() => {
     buttonPressed.classList.remove("pressed");
-  }, 200);
+  }, 100);
 }
 
 function PlayAudio(color) {
@@ -50,6 +69,7 @@ function ResetGame() {
   colorPattern = [];
   playerPattern = [];
   level = 0;
+  patternIterator = 0;
 }
 
-GameLoop();
+GameStart();
