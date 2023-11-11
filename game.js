@@ -1,7 +1,9 @@
 const colors = ["green", "red", "yellow", "blue"];
 const buttons = document.querySelectorAll('div[type="button"]');
+const gameTitle = document.getElementById("level-title");
+const backgroundColor = document.body;
+const wrongAudio = new Audio("./sounds/wrong.mp3");
 
-let gameTitle = document.getElementById("level-title");
 let colorPattern = [];
 let patternIterator = 0;
 let level = 0;
@@ -75,7 +77,16 @@ function ResetGame() {
   colorPattern = [];
   level = 0;
   patternIterator = 0;
-  AddNextColor();
+  canPress = false;
+  backgroundColor.classList.add("game-over");
+  wrongAudio.play();
+
+  setTimeout(() => {
+    AddNextColor();
+    backgroundColor.classList.remove("game-over");
+  }, 500);
+
+  canPress = true;
 }
 
 GameStart();
